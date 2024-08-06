@@ -1,12 +1,11 @@
-import "./App.css";
+import { GlobalStyle } from "./GlobalStyle";
 import { Todo } from "./pages/Todo";
 
-function App() {
+export const App = () => {
      return (
-          <div className="App">
+          <>
+               <GlobalStyle />
                <Todo />
-          </div>
+          </>
      );
-}
-
-export default App;
+};

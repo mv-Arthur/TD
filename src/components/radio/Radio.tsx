@@ -6,7 +6,7 @@ export const Radio: React.FC = React.memo(() => {
      const [isCheked, setIsCheked] = React.useState(false);
 
      const handleClick = () => {
-          setIsCheked((prev) => !prev);
+          setIsCheked(true);
           setTimeout(() => setIsCheked(false), 300);
      };
 
