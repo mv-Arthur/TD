@@ -1,10 +1,15 @@
-import RobotoThin from "./fonts/Roboto-Thin.ttf";
-import RobotoLight from "./fonts/Roboto-Light.ttf";
-import RobotoRegular from "./fonts/Roboto-Regular.ttf";
-import RobotoMedium from "./fonts/Roboto-Medium.ttf";
-import RobotoBold from "./fonts/Roboto-Bold.ttf";
-import RobotoBlack from "./fonts/Roboto-Black.ttf";
-import { createGlobalStyle } from "styled-components";
+import RobotoThin from "../fonts/Roboto-Thin.ttf";
+import RobotoLight from "../fonts/Roboto-Light.ttf";
+import RobotoRegular from "../fonts/Roboto-Regular.ttf";
+import RobotoMedium from "../fonts/Roboto-Medium.ttf";
+import RobotoBold from "../fonts/Roboto-Bold.ttf";
+import RobotoBlack from "../fonts/Roboto-Black.ttf";
+import styled, { createGlobalStyle } from "styled-components";
+
+export const Container = styled.div`
+     width: 800px;
+     margin: 0 auto;
+`;
 
 export const GlobalStyle = createGlobalStyle`
      @font-face {

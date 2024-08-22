@@ -1,6 +1,6 @@
 import React from "react";
 import sprite from "../../sprite.svg";
-import { S } from "./S.styled";
+import { S } from "./radio.styled";
 
 export const Radio: React.FC = React.memo(() => {
      const [isCheked, setIsCheked] = React.useState(false);

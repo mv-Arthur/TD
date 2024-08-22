@@ -1,31 +1,22 @@
-import React from "react";
-import styled from "styled-components";
 import { Radio } from "../radio/Radio";
+import sprite from "../../sprite.svg";
+import { S } from "./task.styled";
+import React from "react";
 
-export const Task = () => {
+export const Task: React.FC = React.memo(() => {
      return (
           <S.Wrapper>
                <Radio />
                <S.TextWrap>
                     <S.Header>Дожить</S.Header>
                     <S.Description>Хотя бы до обеда</S.Description>
-                    <S.Tags>Входящие</S.Tags>
+                    <S.Tags>
+                         Входящие{" "}
+                         <S.Svg>
+                              <use xlinkHref={`${sprite}#incoming`} />
+                         </S.Svg>
+                    </S.Tags>
                </S.TextWrap>
           </S.Wrapper>
      );
-};
-
-const S = {
-     Wrapper: styled.div`
-          display: flex;
-          gap: 6px;
-     `,
-     Header: styled.h3`
-          color: rgb(32, 32, 32);
-          font-size: 14px;
-          font-weight: 400;
-     `,
-     Description: styled.p``,
-     TextWrap: styled.div``,
-     Tags: styled.div``,
-};
+});
