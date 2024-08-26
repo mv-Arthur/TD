@@ -7,7 +7,6 @@ export class S {
      `;
 
      static Input = styled(this.TextStyle).attrs({ contentEditable: true, suppressContentEditableWarning: true })`
-          width: 100%;
           resize: none;
           border: none;
           background: none;
