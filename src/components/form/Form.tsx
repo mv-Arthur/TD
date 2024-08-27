@@ -1,27 +1,29 @@
 import React from "react";
 import styled from "styled-components";
-import { Input } from "../input/Input";
+import { CustomChangeEvent, Input, InputErrorType } from "../input/Input";
 
 export const Form: React.FC = React.memo(() => {
-     const [error, setError] = React.useState("");
+     const [error, setError] = React.useState<InputErrorType>({
+          text: "",
+          status: false,
+     });
+
+     const onChangeHandle = (event: CustomChangeEvent) => {
+          setError(event.error);
+     };
 
      return (
           <S.Wrapper>
                <Input
-                    options={{ limit: 500 }}
-                    onChange={(str) => console.log(str)}
+                    limit={3}
+                    onChange={onChangeHandle}
                     variant="name"
                     placeholder="Название задачи"
                     marginbottom={10}
                />
-               <Input
-                    options={{ limit: 16383 }}
-                    onChange={(str) => console.log(str)}
-                    variant="descr"
-                    placeholder="Описание"
-               />
+               <Input limit={3} onChange={onChangeHandle} variant="descr" placeholder="Описание" />
 
-               {error && <S.Error>{error}</S.Error>}
+               {error.status && <S.Error>{error.text}</S.Error>}
           </S.Wrapper>
      );
 });

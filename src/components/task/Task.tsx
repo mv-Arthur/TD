@@ -11,7 +11,7 @@ export const Task: React.FC = React.memo(() => {
                     <S.Header>Дожить</S.Header>
                     <S.Description>Хотя бы до обеда</S.Description>
                     <S.Tags>
-                         Входящие{" "}
+                         Входящие
                          <S.Svg>
                               <use xlinkHref={`${sprite}#incoming`} />
                          </S.Svg>

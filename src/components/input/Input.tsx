@@ -3,22 +3,13 @@ import { S } from "./input.styled";
 
 export type VariantType = "name" | "descr";
 
-type Options = {
-     limit: number;
-};
-
-type onChangeParamType = {
-     value: string;
-     error: string | boolean;
-};
-
 type PropsType = {
      variant: VariantType;
      placeholder?: string;
      margintop?: number;
      marginbottom?: number;
-     onChange: (value: onChangeParamType) => void;
-     options: Options;
+     onChange: (value: CustomChangeEvent) => void;
+     limit: number;
 };
 
 const moveCaretToEnd = (target: HTMLDivElement) => {
@@ -32,18 +23,34 @@ const moveCaretToEnd = (target: HTMLDivElement) => {
      range.detach();
 };
 
+export type InputErrorType = {
+     status: boolean;
+     text: string;
+};
+
+export class CustomChangeEvent {
+     value: string;
+     error: InputErrorType = {
+          status: false,
+          text: "",
+     };
+
+     constructor(inputValue: string, limit: number, variant: VariantType) {
+          this.value = inputValue;
+          this.error.status = this.value.length > limit;
+          this.error.text = this.error.status
+               ? `Лимит ${variant === "name" ? "названия" : "описания"} : ${inputValue.length} / ${limit}`
+               : "";
+     }
+}
+
 export const Input: React.FC<PropsType> = React.memo((props) => {
      const [inputValue, setInputValue] = React.useState<string | null>("");
 
      React.useEffect(
-          () =>
-               props.onChange({
-                    value: inputValue as string,
-                    error:
-                         (inputValue?.length as number) > props.options.limit &&
-                         `Лимит названия задачи: ${inputValue?.length} / ${props.options.limit}`,
-               }),
-          [inputValue, props],
+          () => props.onChange(new CustomChangeEvent(inputValue as string, props.limit, props.variant)),
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          [inputValue],
      );
 
      return (
