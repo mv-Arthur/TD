@@ -5,6 +5,7 @@ import { Form } from "../components/form/Form";
 import { Container } from "../styled/GlobalStyle";
 
 export const Todo = () => {
+     console.log("painted");
      return (
           <S.Wrapper>
                <Container>

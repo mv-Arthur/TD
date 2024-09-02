@@ -3,13 +3,16 @@ import { S } from "./input.styled";
 
 export type VariantType = "name" | "descr";
 
+type HandlerType<T> = (value: T) => void;
+
 type PropsType = {
      variant: VariantType;
      placeholder?: string;
      margintop?: number;
      marginbottom?: number;
-     onChange: (value: CustomChangeEvent) => void;
+     onChange: HandlerType<CustomChangeEvent>;
      limit: number;
+     onFocus?: HandlerType<InputErrorType>;
 };
 
 const moveCaretToEnd = (target: HTMLDivElement) => {
@@ -39,7 +42,7 @@ export class CustomChangeEvent {
           this.value = inputValue;
           this.error.status = this.value.length > limit;
           this.error.text = this.error.status
-               ? `Лимит ${variant === "name" ? "названия" : "описания"} : ${inputValue.length} / ${limit}`
+               ? `Лимит ${variant === "name" ? "названия" : "описания"} : ${this.value.length} / ${limit}`
                : "";
      }
 }
@@ -47,21 +50,24 @@ export class CustomChangeEvent {
 export const Input: React.FC<PropsType> = React.memo((props) => {
      const [inputValue, setInputValue] = React.useState<string | null>("");
 
+     const changeEvent = new CustomChangeEvent(inputValue as string, props.limit, props.variant);
+
      React.useEffect(
-          () => props.onChange(new CustomChangeEvent(inputValue as string, props.limit, props.variant)),
+          () => props.onChange(changeEvent),
           // eslint-disable-next-line react-hooks/exhaustive-deps
           [inputValue],
      );
 
+     const onInputHandler = (e: React.FormEvent<HTMLDivElement>) => {
+          setInputValue(e.currentTarget.textContent);
+          moveCaretToEnd(e.currentTarget);
+     };
+
+     const onFoucusHandler = (e: React.FocusEvent<HTMLDivElement>) => props.onFocus?.(changeEvent.error);
+
      return (
           <S.InputWrapper $margintop={props.margintop} $marginbottom={props.marginbottom}>
-               <S.Input
-                    $variant={props.variant}
-                    onInput={(e) => {
-                         setInputValue(e.currentTarget.textContent);
-                         moveCaretToEnd(e.currentTarget);
-                    }}
-               >
+               <S.Input onFocus={onFoucusHandler} $variant={props.variant} onInput={onInputHandler}>
                     {inputValue}
                </S.Input>
                {!inputValue && <S.Placeholder $variant={props.variant}>{props.placeholder}</S.Placeholder>}

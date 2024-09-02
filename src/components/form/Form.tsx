@@ -3,14 +3,11 @@ import styled from "styled-components";
 import { CustomChangeEvent, Input, InputErrorType } from "../input/Input";
 
 export const Form: React.FC = React.memo(() => {
-     const [error, setError] = React.useState<InputErrorType>({
-          text: "",
-          status: false,
-     });
+     const [errors, setErrors] = React.useState<InputErrorType[]>([]);
 
-     const onChangeHandle = (event: CustomChangeEvent) => {
-          setError(event.error);
-     };
+     const onChangeHandle = (event: CustomChangeEvent) => setErrors([...errors, event.error]);
+
+     const onFocusHandle = (error: InputErrorType) => setErrors([...errors, error]);
 
      return (
           <S.Wrapper>
@@ -20,10 +17,17 @@ export const Form: React.FC = React.memo(() => {
                     variant="name"
                     placeholder="Название задачи"
                     marginbottom={10}
+                    onFocus={onFocusHandle}
                />
-               <Input limit={3} onChange={onChangeHandle} variant="descr" placeholder="Описание" />
+               <Input
+                    limit={3}
+                    onChange={onChangeHandle}
+                    variant="descr"
+                    placeholder="Описание"
+                    onFocus={onFocusHandle}
+               />
 
-               {error.status && <S.Error>{error.text}</S.Error>}
+               {errors[0].status && <S.Error>{errors[0].text}</S.Error>}
           </S.Wrapper>
      );
 });
