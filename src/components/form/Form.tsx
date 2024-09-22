@@ -1,13 +1,55 @@
 import React from "react";
 import styled from "styled-components";
-import { CustomChangeEvent, Input, InputErrorType } from "../input/Input";
+import { Input } from "../input/Input";
+import { useErrorPriority } from "../../hooks/useError/useError";
+import { CustomChangeEvent, InputErrorType } from "../../hooks/useInputValue/useInputValue";
+
+const useError = () => {
+     const [currentError, setCurrentError] = React.useState<InputErrorType | null>(null);
+     const stack: CustomChangeEvent[] = React.useMemo(() => [], []);
+
+     const restocking = (changeEvent: CustomChangeEvent) => {
+          console.log(changeEvent);
+          stack.push(changeEvent);
+          setCurrentError(changeEvent.error);
+     };
+
+     const removal = (inputId: string) => {
+          for (let i = 0; i < stack.length; i++) {
+               if (stack[i].inputId === inputId) {
+                    stack.splice(i, 1);
+                    break;
+               }
+          }
+          const index = Math.floor(Math.random() * stack.length);
+          if (stack[index]) setCurrentError(stack[index].error);
+     };
+
+     const changePriority = (inputId: string) => {};
+
+     console.log(stack);
+
+     return { currentError, restocking, removal };
+};
 
 export const Form: React.FC = React.memo(() => {
-     const [errors, setErrors] = React.useState<InputErrorType[]>([]);
+     // const [error, setError] = React.useState<InputErrorType>();
+     // const { initialize, errors, setPriority } = useErrorPriority();
 
-     const onChangeHandle = (event: CustomChangeEvent) => setErrors([...errors, event.error]);
+     const { currentError, restocking, removal } = useError();
+     const onChangeHandle = (event: CustomChangeEvent) => {
+          // setError(event.error)
+          if (event.error) restocking(event);
+          else removal(event.inputId);
 
-     const onFocusHandle = (error: InputErrorType) => setErrors([...errors, error]);
+          // console.log(event);
+     };
+     console.log(currentError);
+     const onFocusHandle = (error: InputErrorType) => {
+          // setError(error);
+          // setPriority(error.id);
+          // console.log(error);
+     };
 
      return (
           <S.Wrapper>
@@ -27,7 +69,7 @@ export const Form: React.FC = React.memo(() => {
                     onFocus={onFocusHandle}
                />
 
-               {errors[0].status && <S.Error>{errors[0].text}</S.Error>}
+               {/* {error?.status && <S.Error>{error?.text}</S.Error>} */}
           </S.Wrapper>
      );
 });
